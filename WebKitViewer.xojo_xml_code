@@ -1,0 +1,2315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RBProject version="2013r3.2" FormatVersion="2" MinIDEVersion="20070100">
+<block type="Module" ID="1136652569">
+ <ObjName>WebKitViewer</ObjName>
+ <ObjContainerID>1610805287</ObjContainerID>
+ <IsClass>1</IsClass>
+ <Superclass>HTMLViewer</Superclass>
+ <ItemFlags>1</ItemFlags>
+ <IsInterface>0</IsInterface>
+ <Compatibility></Compatibility>
+ <HookInstance>
+  <ItemName>KeyDown</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function KeyDown(Key As String) As Boolean</SourceLine>
+   <SourceLine>#pragma Unused Key</SourceLine>
+   <SourceLine>Return kEventNotHandled</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>KeyUp</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub KeyUp(Key As String)</SourceLine>
+   <SourceLine>#pragma Unused Key</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <HookInstance>
+  <ItemName>Open</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Open()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function alloc Lib "Cocoa" Selector "alloc" (classRef As Ptr) As Ptr</SourceLine>
+   <SourceLine>Declare Function init Lib "Cocoa" Selector "init" (classRef As Ptr) As Ptr</SourceLine>
+   <SourceLine>Declare Function NSClassFromString Lib "Cocoa" (aClassName As CFStringRef) As Ptr</SourceLine>
+   <SourceLine>Declare Function NSSelectorFromString Lib "Cocoa" (aSelector As CFStringRef) As Ptr</SourceLine>
+   <SourceLine>Declare Function objc_allocateClassPair Lib "Cocoa" (superclass As Ptr, name As CString, extraBytes As Integer) As Ptr</SourceLine>
+   <SourceLine>Declare Function objc_getProtocol Lib "Cocoa" (name As CString) As Ptr</SourceLine>
+   <SourceLine>Declare Function class_addMethod Lib "Cocoa" (aClass As Ptr, name As Ptr, imp As Ptr, types As CString) As Boolean</SourceLine>
+   <SourceLine>Declare Function class_addProtocol Lib "Cocoa" (aClass As Ptr, protocol As Ptr) As Boolean</SourceLine>
+   <SourceLine>Declare Sub objc_registerClassPair Lib "Cocoa" (aClass As Ptr)</SourceLine>
+   <SourceLine>Declare Sub setUIDelegate Lib "Cocoa" Selector "setUIDelegate:" (id As Ptr, del_id As Ptr)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (DelegateClass = Nil) then</SourceLine>
+   <SourceLine>DelegateClass = objc_allocateClassPair(NSClassFromString("WebView"), "SSWebView", 0)</SourceLine>
+   <SourceLine>objc_registerClassPair DelegateClass  // register the class</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// add the protocols to our subclass</SourceLine>
+   <SourceLine>if (not class_addProtocol(DelegateClass, objc_getProtocol("WebUIDelegate"))) then Break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// context menu</SourceLine>
+   <SourceLine>if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:contextMenuItemsForElement:defaultMenuItems:"), _</SourceLine>
+   <SourceLine>AddressOf CocoaWebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf CocoaWebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf CocoawebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingInfo"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("draggingEntered:"), AddressOf CocoaPerformDragOperation, "i@:@")) then Break</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.mDelegateInstance = init(alloc(DelegateClass))</SourceLine>
+   <SourceLine>setUIDelegate Ptr(me.Handle), me.mDelegateInstance</SourceLine>
+   <SourceLine>Viewers.Append me</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>RaiseEvent Open</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+ </HookInstance>
+ <Method>
+  <ItemName>AcceptTextDrop</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub AcceptTextDrop()</SourceLine>
+   <SourceLine>me.mAcceptTextDrop = TRUE</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Bold</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Bold()</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('bold', false, null);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <DelegateDeclaration>
+  <ItemName>CefFrameCutDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Sub CefFrameCutDelegate(p_cef_frame_t As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_cef_frame_t As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefFramePasteDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Sub CefFramePasteDelegate(p_cef_frame_t As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_cef_frame_t As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefGetFocusedFrameDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Function CefGetFocusedFrameDelegate(p_cef_browser_t As Ptr) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_cef_browser_t As Ptr</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefOnDragEnter</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Function CefOnDragEnter(drag_handler As Ptr, browser As Ptr, drag_data As Ptr, mask As Ptr) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>drag_handler As Ptr, browser As Ptr, drag_data As Ptr, mask As Ptr</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefReload</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Sub CefReload(p_pointer As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_pointer As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefReloadIgnoreCache</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Sub CefReloadIgnoreCache(p_pointer As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_pointer As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </DelegateDeclaration>
+ <DelegateDeclaration>
+  <ItemName>CefSetFocusDelegate</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Delegate Sub CefSetFocusDelegate(p_pointer As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_pointer As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </DelegateDeclaration>
+ <Method>
+  <ItemName>CocoaDictionaryFromNSDictionary</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CocoaDictionaryFromNSDictionary(element As Ptr) As Dictionary</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>// DECLARES</SourceLine>
+   <SourceLine>Declare Function NSArrayCount Lib "Cocoa" Selector "count" (id As Ptr) As Integer  // NSUinteger</SourceLine>
+   <SourceLine>Declare Function NSArrayObjectAtIndex Lib "Cocoa" Selector "objectAtIndex:" (id As Ptr, index As Integer) As Ptr  // NSObject</SourceLine>
+   <SourceLine>Declare Function NSDictionaryAllKeys Lib "Cocoa" Selector "allKeys" (id As Ptr) As Ptr  // NSArray</SourceLine>
+   <SourceLine>Declare Function NSDictionaryObjectForKey Lib "Cocoa" Selector "objectForKey:" (id As Ptr, aKey As CFStringRef) As Ptr  // NSObject</SourceLine>
+   <SourceLine>Declare Function NSDictionaryValueForKey Lib "Cocoa" Selector "valueForKey:" (id As Ptr, aKey As CFStringRef) As Ptr  // NSString?</SourceLine>
+   <SourceLine>Declare Function NSNumberBoolValue Lib "Cocoa" Selector "boolValue" (id As Ptr) As Boolean</SourceLine>
+   <SourceLine>Declare Function NSURLAbsoluteString Lib "Cocoa" Selector "absoluteString" (id As Ptr) As CFStringRef  // NSString</SourceLine>
+   <SourceLine>Declare Function CFRetain Lib "Cocoa" (cf As Ptr) As CFStringRef</SourceLine>
+   <SourceLine>Declare Sub CFRelease Lib "Cocoa" (cf As CFStringRef)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// VARIABLES</SourceLine>
+   <SourceLine>DIM returnValue As NEW Dictionary</SourceLine>
+   <SourceLine>DIM elementKeys As Ptr = NSDictionaryAllKeys(element)  // get array of NSDictionary keys</SourceLine>
+   <SourceLine>DIM elementKeysCount As Integer = NSArrayCount(elementKeys)  // get array count</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// loop over the NSArray and build a Xojo array</SourceLine>
+   <SourceLine>for i as Integer = 0 to (elementKeysCount - 1)</SourceLine>
+   <SourceLine>DIM keyName As CFStringRef = CFRetain(NSArrayObjectAtIndex(elementKeys, i))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>select case keyName</SourceLine>
+   <SourceLine>case kWebElementImage  // Picture representing an image element.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementImage) = CocoaPictureFromNSImage(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementImageAltString  // String of the ALT attribute of an image element.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementImageAltString) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
+   <SourceLine>' case kWebElementImageRect  // An NSValue containing an NSRect, the size of an image element.</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>case kWebElementImageURL  // String containing the absolute URI of an image element.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementImageURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementIsContentEditableKey  // BOOL value to indicate whether the element is editable or not.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementIsContentEditableKey) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>' case kWebElementIsInScrollBar</SourceLine>
+   <SourceLine>' returnValue.Value(kWebElementIsInScrollBar) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementIsSelected  //BOOL value to indicate whether a text element is selected or not.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementIsSelected) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementLinkIsLive  // BOOL indicating whether the link is live or not.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementLinkIsLive) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementLinkLabel  // String containing the text within an anchor.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementLinkLabel) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
+   <SourceLine>case kWebElementLinkURL  // String containing the absolute URI of a link if the element is within an anchor.</SourceLine>
+   <SourceLine>returnValue.Value(kWebElementLinkURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>' case kWebElementTargetFrame</SourceLine>
+   <SourceLine>//</SourceLine>
+   <SourceLine>end select</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (keyName &lt;&gt; "") then</SourceLine>
+   <SourceLine>CFRelease keyName</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>element As Ptr</ItemParams>
+  <ItemResult>Dictionary</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoaDraggingEntered</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CocoaDraggingEntered(id As Ptr, sel As Ptr, sender As Ptr) As Integer</SourceLine>
+   <SourceLine>break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return 32</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>id As Ptr, sel As Ptr, sender As Ptr</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoaPerformDragOperation</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Sub CocoaPerformDragOperation(id As Ptr, sel As Ptr, sender As Ptr)</SourceLine>
+   <SourceLine>break</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>id As Ptr, sel As Ptr, sender As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoaPictureFromNSImage</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CocoaPictureFromNSImage(nsImage As Ptr) As Picture</SourceLine>
+   <SourceLine>DIM returnValue As Picture</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa   // lifted from macoslib</SourceLine>
+   <SourceLine>// DECLARES</SourceLine>
+   <SourceLine>Declare Function CGImageForPropsedRectContextHints Lib "Cocoa" Selector "CGImageForProposedRect:context:hints:" (id As Ptr, ByRef proposedDestRect As NSRect, referenceContext As Ptr, hints As Ptr) As Ptr  // CGImageRef</SourceLine>
+   <SourceLine>Declare Function CGImageGetHeight Lib "Cocoa" (image As Ptr) As Integer</SourceLine>
+   <SourceLine>Declare Function CGImageGetWidth Lib "Cocoa" (image As Ptr) As Integer</SourceLine>
+   <SourceLine>Declare Function Size Lib "Cocoa" Selector "size" (id As Ptr) As NSSize</SourceLine>
+   <SourceLine>Declare Sub CGContextDrawImage Lib "Cocoa" (context As Ptr, rect As CGRect, image As Ptr)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// VARIABLES</SourceLine>
+   <SourceLine>DIM proposedDestRect As NSRect</SourceLine>
+   <SourceLine>DIM nsImageSize As NSSize = Size(nsImage)</SourceLine>
+   <SourceLine>DIM context As Ptr</SourceLine>
+   <SourceLine>DIM cgRectRef As CGRect</SourceLine>
+   <SourceLine>DIM cgPointRef As CGPoint</SourceLine>
+   <SourceLine>DIM cgSizeRef As CGSize</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// set the default size</SourceLine>
+   <SourceLine>proposedDestRect.Width = nsImageSize.Width</SourceLine>
+   <SourceLine>proposedDestRect.Height = nsImageSize.Height</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// create the CGImage</SourceLine>
+   <SourceLine>DIM CGImageRef As Ptr = CGImageForPropsedRectContextHints(nsImage, proposedDestRect, Nil, Nil)</SourceLine>
+   <SourceLine>if (CGImageRef &lt;&gt; Nil) then</SourceLine>
+   <SourceLine>// create the xojo picture</SourceLine>
+   <SourceLine>returnValue = NEW Picture(CGImageGetWidth(CGImageRef), CGImageGetHeight(CGImageRef))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>cgPointRef.X = 0.0</SourceLine>
+   <SourceLine>cgPointRef.Y = 0.0</SourceLine>
+   <SourceLine>cgSizeRef.Width = returnValue.Width</SourceLine>
+   <SourceLine>cgSizeRef.Height = returnValue.Height</SourceLine>
+   <SourceLine>cgRectRef.Origin = cgPointRef</SourceLine>
+   <SourceLine>cgRectRef.RectSize = cgSizeRef</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>context = Ptr(returnValue.Graphics.Handle(Graphics.HandleTypeCGContextRef))</SourceLine>
+   <SourceLine>CGContextDrawImage context, cgRectRef, CGImageRef</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>nsImage As Ptr</ItemParams>
+  <ItemResult>Picture</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoaWebViewContextMenuItemsForElementDefaultMenuItems</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CocoaWebViewContextMenuItemsForElementDefaultMenuItems(pid As Ptr, sel As Ptr, sender As Ptr, element As Ptr, defaultMenuItems As Ptr) As Ptr</SourceLine>
+   <SourceLine>#pragma Unused sel</SourceLine>
+   <SourceLine>#pragma Unused sender</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>DIM menuItems As Ptr  // items to be displayed in the context menu</SourceLine>
+   <SourceLine>DIM viewer As WebKitViewer  // viewer object that is actually displaying the context menu</SourceLine>
+   <SourceLine>DIM baseMenu As NEW MenuItem  // menu object to pass to the ConstructContextualMenu event</SourceLine>
+   <SourceLine>DIM willConstructContextualMenu As Boolean  // flag, TRUE to create a context menu</SourceLine>
+   <SourceLine>DIM hitItem As MenuItem  // selected menu item from custom context menu</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (UBound(Viewers) &gt; -1) then</SourceLine>
+   <SourceLine>for i as Integer = 0 to UBound(Viewers)</SourceLine>
+   <SourceLine>if (Viewers(i).mDelegateInstance = pid) then  // found the viewer to create the context menu</SourceLine>
+   <SourceLine>viewer = Viewers(i)</SourceLine>
+   <SourceLine>baseMenu.Tag = CocoaDictionaryFromNSDictionary(element)</SourceLine>
+   <SourceLine>willConstructContextualMenu = viewer.ConstructContextualMenu(baseMenu, System.MouseX, System.MouseY)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (willConstructContextualMenu) AND (baseMenu.Count &gt; 0) then  // custom context menu</SourceLine>
+   <SourceLine>hitItem = baseMenu.PopUp</SourceLine>
+   <SourceLine>if (hitItem &lt;&gt; Nil) then</SourceLine>
+   <SourceLine>hitItem.Tag = baseMenu.Tag</SourceLine>
+   <SourceLine>call viewer.ContextualMenuAction(hitItem)</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>elseif (willConstructContextualMenu) AND (baseMenu.Count = 0) then  // default context menu</SourceLine>
+   <SourceLine>menuItems = defaultMenuItems</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>exit for i  // break out of the loop as we no longer need to check any other viewers</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>next</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return menuItems  // if this is Nil no context menu is displayed</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>pid As Ptr, sel As Ptr, sender As Ptr, element As Ptr, defaultMenuItems As Ptr</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoaWebViewDragDestinationActionMaskForDraggingInfo</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Function CocoaWebViewDragDestinationActionMaskForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, draggingInfo As Ptr) As WebDragDestinationAction</SourceLine>
+   <SourceLine>DIM returnValue As WebDragDestinationAction = WebDragDestinationAction.WebDragDestinationActionNone</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>returnValue = WebDragDestinationAction.WebDragDestinationActionLoad</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>id As Ptr, sel As Ptr, sender As Ptr, draggingInfo As Ptr</ItemParams>
+  <ItemResult>WebDragDestinationAction</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>CocoawebViewWillPerformDragDestinationActionForDraggingInfo</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Sub CocoawebViewWillPerformDragDestinationActionForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, action As Integer, draggingInfo As Ptr)</SourceLine>
+   <SourceLine>Break</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams>id As Ptr, sel As Ptr, sender As Ptr, action As Integer, draggingInfo As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ConstructContextualMenu</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ConstructContextualMenu(base As MenuItem, x As Integer, y As Integer) As Boolean</SourceLine>
+   <SourceLine>Return RaiseEvent ConstructContextualMenu(base, x, y)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>base As MenuItem, x As Integer, y As Integer</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Constructor</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Constructor()</SourceLine>
+   <SourceLine>me.Renderer = 1  // webkit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// Calling the overridden superclass constructor.</SourceLine>
+   <SourceLine>Super.Constructor</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>4096</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ContextualMenuAction</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function ContextualMenuAction(hitItem As MenuItem) As Boolean</SourceLine>
+   <SourceLine>Return RaiseEvent ContextualMenuAction(hitItem)</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>1</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>hitItem As MenuItem</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Copy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Copy()</SourceLine>
+   <SourceLine>' Copies the current selection inside the HTMLViewer to the clipboard.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub copy Lib "Cocoa" Selector "copy:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>copy me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_copy_clipboard(gtk_bin_get_child(me.Handle))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>DIM t_cef_frame_cut As NEW CefFrameCutDelegate(t_cef_frame.Ptr(28))</SourceLine>
+   <SourceLine>t_cef_frame_cut.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Cut</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Cut()</SourceLine>
+   <SourceLine>' Cuts the current selection inside the web_view to the clipboard.</SourceLine>
+   <SourceLine>' Note, this will only work if the HTMLViewer's contentEditable is set to true either</SourceLine>
+   <SourceLine>' through the module method or in your HTML document</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub cut Lib "Cocoa" Selector "cut:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>cut me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_cut_clipboard(gtk_bin_get_child(me.Handle))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>DIM t_cef_frame_cut As NEW CefFrameCutDelegate(t_cef_frame.Ptr(24))</SourceLine>
+   <SourceLine>t_cef_frame_cut.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Delete</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Delete()</SourceLine>
+   <SourceLine>' Deletes the current selection inside the web_view .</SourceLine>
+   <SourceLine>' Note, this will only work if the HTMLViewer's contentEditable is set to true either</SourceLine>
+   <SourceLine>' through the module method or in your HTML document</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub delete Lib "Cocoa" Selector "delete:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>delete me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_delete_selection(gtk_bin_get_child(me.Handle))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>DIM t_cef_frame_cut As NEW CefFrameCutDelegate(t_cef_frame.Ptr(36))</SourceLine>
+   <SourceLine>t_cef_frame_cut.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisableClick</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisableClick()</SourceLine>
+   <SourceLine>' Disables all clicks in the HTMLViewer</SourceLine>
+   <SourceLine>' Note: this stops all clicks, including hyperlinks and javascript, so use with caution</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('click', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisableCopy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisableCopy()</SourceLine>
+   <SourceLine>' Disables the copy command</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('copy', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisableCut</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisableCut()</SourceLine>
+   <SourceLine>' Disables the cut command</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('cut', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisableDrop</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisableDrop()</SourceLine>
+   <SourceLine>' Disables all drops to the HTMLViewer</SourceLine>
+   <SourceLine>' Note: this will disable drops in the HTML as well</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('dragover', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('dragenter', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('drop', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisableKeyDown</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisableKeyDown()</SourceLine>
+   <SourceLine>' Disables all keyboard input</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('keydown', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>DisablePaste</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub DisablePaste()</SourceLine>
+   <SourceLine>' Disables the paste command</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.addEventListener('paste', function(event){event.preventDefault();}, false);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>EvaluateJavaScript</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function EvaluateJavaScript(script As String) As String</SourceLine>
+   <SourceLine>DIM returnValue As String = ""</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetMacOS</SourceLine>
+   <SourceLine>Declare Function stringByEvaluatingJavaScriptFromString Lib "Cocoa" Selector "stringByEvaluatingJavaScriptFromString:" (id As Integer, script As CFStringRef) As CFStringRef</SourceLine>
+   <SourceLine>returnValue = stringByEvaluatingJavaScriptFromString(Me.Handle, script)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return returnValue</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>script As String</ItemParams>
+  <ItemResult>String</ItemResult>
+ </Method>
+ <ExternalMethod>
+  <ItemName>gtk_bin_get_child</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Function gtk_bin_get_child Lib "libgtk" (bin As Integer) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>bin As Integer</ItemParams>
+  <ItemResult>Integer</ItemResult>
+  <LibraryName>libgtk</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <Method>
+  <ItemName>InsertHTML</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InsertHTML(html As String)</SourceLine>
+   <SourceLine>' Inserts a chunk of HTML code at the insertion point</SourceLine>
+   <SourceLine>' Note: this needs to be properly formatted HTML - ie; &lt;b&gt;Hi&lt;/b&gt;&lt;i&gt;world&lt;/i&gt;</SourceLine>
+   <SourceLine>' Note: the document/element needs to be editable for this to work</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (html &lt;&gt; "") then</SourceLine>
+   <SourceLine>html = ReplaceAll(html, "\", "\\")</SourceLine>
+   <SourceLine>html = ReplaceAll(html, "'", "\'")</SourceLine>
+   <SourceLine>html = ReplaceLineEndings(html, "\n")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertHTML', false, '" + html + "');"</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>html As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InsertImage</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InsertImage(image As Picture)</SourceLine>
+   <SourceLine>' Inserts an image in the current document</SourceLine>
+   <SourceLine>' Note: this will properly encode a Xojo picture as a PNG image for display</SourceLine>
+   <SourceLine>' Note: the document/element needs to be editable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (image &lt;&gt; Nil) then</SourceLine>
+   <SourceLine>DIM t_memoryblock As MemoryBlock = image.GetData(Picture.FormatPNG)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM t_encoded_picture As String = t_memoryblock</SourceLine>
+   <SourceLine>t_encoded_picture = EncodeBase64(t_encoded_picture, 0)  // the zero means no line breaks in the base64 encoded data</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertImage', false, 'data:image/png;base64," + t_encoded_picture + "');"</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>image As Picture</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InsertImage</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InsertImage(uri As String)</SourceLine>
+   <SourceLine>' Inserts either a properly formatted URL to an image on a server or a properly encoded image into the current document</SourceLine>
+   <SourceLine>' Note: the document must be editable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (uri &lt;&gt; "") then</SourceLine>
+   <SourceLine>select case (NthField(uri, ":", 1))</SourceLine>
+   <SourceLine>case "http", "https", "data"</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertImage', false, '" + uri + "');"</SourceLine>
+   <SourceLine>end select</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>uri As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InsertLink</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InsertLink(p_uri As String)</SourceLine>
+   <SourceLine>' Inserts a clickable link in to the document</SourceLine>
+   <SourceLine>' Note: the document/element must be editable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (p_uri &lt;&gt; "") then</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('createLink', false, '" + p_uri + "');"</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>p_uri As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>InsertText</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub InsertText(text As String)</SourceLine>
+   <SourceLine>' Inserts a chunk of text into the document as plain text</SourceLine>
+   <SourceLine>' Note: the document/element must be editable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (text &lt;&gt; "") then</SourceLine>
+   <SourceLine>text = ReplaceAll(text, "\", "\\")</SourceLine>
+   <SourceLine>text = ReplaceAll(text, "'", "\'")</SourceLine>
+   <SourceLine>text = ReplaceLineEndings(text, "\n")</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertText', false, '" + text + "');"</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>text As String</ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Italic</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Italic()</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('italic', false, null);"</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeTextLarger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MakeTextLarger()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub makeTextLarger Lib "Cocoa" Selector "makeTextLarger:" (id As Integer)</SourceLine>
+   <SourceLine>makeTextLarger me.Handle</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeTextSmaller</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MakeTextSmaller()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub makeTextSmaller Lib "Cocoa" Selector "makeTextSmaller:" (id As Integer)</SourceLine>
+   <SourceLine>makeTextSmaller me.Handle</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MakeTextStandardSize</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MakeTextStandardSize()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub makeTextStandardSize Lib "Cocoa" Selector "makeTextStandardSize:" (id As Integer)</SourceLine>
+   <SourceLine>makeTextStandardSize me.Handle</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>MoveToEndOfSentence</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub MoveToEndOfSentence()</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub moveToEndOfSentence Lib "Cocoa" Selector "moveToEndOfSentence:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>moveToEndOfSentence me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>' #elseif TargetLinux</SourceLine>
+   <SourceLine>' webkit_web_view_select_all(gtk_bin_get_child(me.Handle))  // external method</SourceLine>
+   <SourceLine>'</SourceLine>
+   <SourceLine>' #elseif TargetWin32</SourceLine>
+   <SourceLine>' DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>' DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>' DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>' DIM t_cef_frame_cut As NEW CefFrameCutDelegate(t_cef_frame.Ptr(40))</SourceLine>
+   <SourceLine>' t_cef_frame_cut.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Paste</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Paste()</SourceLine>
+   <SourceLine>' Pastes the current contents of the clipboard to the HTMLViewer</SourceLine>
+   <SourceLine>' Note: the document/element must be editable</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub paste Lib "Cocoa" Selector "paste:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>paste me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_paste_clipboard(gtk_bin_get_child(me.Handle))  // external method</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>DIM t_cef_frame_paste As NEW CefFramePasteDelegate(t_cef_frame.Ptr(32))</SourceLine>
+   <SourceLine>t_cef_frame_paste.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Reload</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub Reload()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub reload Lib "Cocoa" Selector "reload:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>reload me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_reload(gtk_bin_get_child(me.Handle))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_memoryblock As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_reload_delegate As NEW CefReload(t_memoryblock.Ptr(40))</SourceLine>
+   <SourceLine>t_reload_delegate.Invoke(t_memoryblock)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>ReloadFromOrigin</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub ReloadFromOrigin()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub reload Lib "Cocoa" Selector "reloadFromOrigin:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>reload me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_reload_bypass_cache(gtk_bin_get_child(me.Handle))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_memoryblock As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_reload_delegate As NEW CefReloadIgnoreCache(t_memoryblock.Ptr(44))</SourceLine>
+   <SourceLine>t_reload_delegate.Invoke(t_memoryblock)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Search</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Search() As Boolean</SourceLine>
+   <SourceLine>//for As String, forward As Boolean, case_sensitive As Boolean, wrap As Boolean</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SelectAll</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SelectAll()</SourceLine>
+   <SourceLine>' Attempts to select everything inside the HTMLViewer/element.</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub selectAll Lib "Cocoa" Selector "selectAll:" (id As Integer, sender As Integer)</SourceLine>
+   <SourceLine>selectAll me.Handle, me.Handle</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_select_all(gtk_bin_get_child(me.Handle))  // external method</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_get_focused_frame As NEW CefGetFocusedFrameDelegate(t_cef_browser.Ptr(80))</SourceLine>
+   <SourceLine>DIM t_cef_frame As MemoryBlock = Ptr(t_get_focused_frame.Invoke(t_cef_browser))</SourceLine>
+   <SourceLine>DIM t_cef_frame_cut As NEW CefFrameCutDelegate(t_cef_frame.Ptr(40))</SourceLine>
+   <SourceLine>t_cef_frame_cut.Invoke(t_cef_frame)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>SetFocus</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Sub SetFocus()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>// focus is handled properly on this platform</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>// focus is handled properly on this platform</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>DIM t_cef_browser As MemoryBlock = Ptr(me.Handle)</SourceLine>
+   <SourceLine>DIM t_set_focus_delegate As NEW CefSetFocusDelegate(me.Ptr(52))</SourceLine>
+   <SourceLine>t_set_focus_delegate.Invoke(t_cef_browser)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <Method>
+  <ItemName>Val</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Function Val(value As Boolean) As Integer</SourceLine>
+   <SourceLine>DIM t_return As Integer = 0  // FALSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>if (value) then</SourceLine>
+   <SourceLine>t_return = 1  // TRUE</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return</SourceLine>
+   <SourceLine>End Function</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>value As Boolean</ItemParams>
+  <ItemResult>Integer</ItemResult>
+ </Method>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_can_copy_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Function webkit_web_view_can_copy_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult>Integer</ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_can_cut_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Function webkit_web_view_can_cut_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult>Integer</ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_can_paste_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Function webkit_web_view_can_paste_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult>Integer</ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_copy_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_copy_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_cut_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_cut_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_delete_selection</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_delete_selection Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_get_editable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Function webkit_web_view_get_editable Lib "libwebkitgtk-1.0.so" (web_view As Integer) As Integer</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult>Integer</ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_paste_clipboard</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_paste_clipboard Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_reload</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_reload Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_reload_bypass_cache</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_reload_bypass_cache Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_select_all</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_select_all Lib "libwebkitgtk-1.0.so" (web_view As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>webkit_web_view_set_editable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Soft Declare Sub webkit_web_view_set_editable Lib "libwebkitgtk-1.0.so" (web_view As Integer, flag As Integer)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>web_view As Integer, flag As Integer</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>libwebkitgtk-1.0.so</LibraryName>
+  <SoftLink>1</SoftLink>
+ </ExternalMethod>
+ <Hook>
+  <ItemName>ConstructContextualMenu</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>base As MenuItem, x As Integer, y As Integer</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>ContextualMenuAction</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams>hitItem As MenuItem</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>GotFocus</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Hook>
+  <ItemName>Open</ItemName>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemFlags>33</ItemFlags>
+  <SystemFlags>0</SystemFlags>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Hook>
+ <Note>
+  <ItemName>About</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>About</NoteLine>
+   <NoteLine>Loads of help from Christian Schmitz who writes the awesome MonkeyBread Software plugins for Xojo</NoteLine>
+   <NoteLine>http://www.monkeybreadsoftware.eu</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Loading Content Methods</NoteLine>
+   <NoteLine>• Reload</NoteLine>
+   <NoteLine>• ReloadFromOrigin</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Cut, Copy and Paste Action Methods</NoteLine>
+   <NoteLine>• CanCopyClipboard (Linux only)</NoteLine>
+   <NoteLine>• CanCutClipboard (Linux only)</NoteLine>
+   <NoteLine>• CanPasteClipboard (Linux only)</NoteLine>
+   <NoteLine>• Copy</NoteLine>
+   <NoteLine>• Cut</NoteLine>
+   <NoteLine>• Delete</NoteLine>
+   <NoteLine>• DisableCopy</NoteLine>
+   <NoteLine>• DisableCut</NoteLine>
+   <NoteLine>• DisablePaste</NoteLine>
+   <NoteLine>• Paste</NoteLine>
+   <NoteLine>• PasteAsPlainText (Mac OS X only)</NoteLine>
+   <NoteLine>• PasteAsRichText (Mac OS X only)</NoteLine>
+   <NoteLine>• SelectAll</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Document Editing Methods</NoteLine>
+   <NoteLine>• ContentEditable</NoteLine>
+   <NoteLine>• InsertHTML</NoteLine>
+   <NoteLine>• InsertImage</NoteLine>
+   <NoteLine>• InsertLink</NoteLine>
+   <NoteLine>• InsertText</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Handling Mouse Events</NoteLine>
+   <NoteLine>• DisableClick</NoteLine>
+   <NoteLine>• DisableContextMenu</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Handling Keyboard Events</NoteLine>
+   <NoteLine>• DisableKeyDown</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>Miscellaneous</NoteLine>
+   <NoteLine>• SetFocus</NoteLine>
+   <NoteLine>Linux: http://webkitgtk.org/reference/webkitgtk/stable/index.html</NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Note>
+  <ItemName>License</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>License</NoteLine>
+   <NoteLine>I hereby waive all copyright and related or neighboring rights together with all </NoteLine>
+   <NoteLine>associated claims and causes of action with respect to this work to the extent possible under the law.</NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Note>
+  <ItemName>Reference Links</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>Reference Links</NoteLine>
+   <NoteLine>Cocoa: https://developer.apple.com/library/mac/documentation/Cocoa/Conceptual/DisplayWebContent/DisplayWebContent.html</NoteLine>
+   <NoteLine>Linux: http://webkitgtk.org/reference/webkitgtk/stable/index.html</NoteLine>
+   <NoteLine>Windows: http://magpcss.org/ceforum/apidocs/</NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Note>
+  <ItemName>Version</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <NoteLine>Version</NoteLine>
+   <NoteLine>The latest version can always be downloaded from &lt; http://shaosean.tk/xojo/HTMLViewerExtensions/ &gt;</NoteLine>
+   <NoteLine>but seeing as anyone can take this code and do whatever they want with it, you might be able to find it elsewhere.</NoteLine>
+   <NoteLine></NoteLine>
+   <NoteLine>2014-05-27 ss Inital public release</NoteLine>
+   <NoteLine>2014-05-27 ss Inital test release</NoteLine>
+   <NoteLine>2014-06-01 ss Converted back to a class to allow for more integrated features</NoteLine>
+  </ItemSource>
+  <ItemFlags>0</ItemFlags>
+ </Note>
+ <Property>
+  <ItemName>CanCopy</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanCopy As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanCopy As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>' Determines whether or not it is currently possible to copy to the clipboard.</SourceLine>
+   <SourceLine>' Linux only</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM t_return_value As Boolean = TRUE  // always return true, except with Linux</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetLinux</SourceLine>
+   <SourceLine>t_return_value = (webkit_web_view_can_copy_clipboard(gtk_bin_get_child(me.Handle)) = 1)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return_value</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>CanCut</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanCut As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanCut As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>' Determines whether or not it is currently possible to cut to the clipboard.</SourceLine>
+   <SourceLine>' Linux only</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM t_return_value As Boolean = FALSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetLinux</SourceLine>
+   <SourceLine>t_return_value = (webkit_web_view_can_cut_clipboard(gtk_bin_get_child(me.Handle)) = 1)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return_value</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>CanMakeTextLarger</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanMakeTextLarger As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanMakeTextLarger As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>DIM t_return As Boolean = TRUE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function canMakeTextLarger Lib "Cocoa" Selector "canMakeTextLarger" (id As Integer) As Boolean</SourceLine>
+   <SourceLine>t_return = canMakeTextLarger(me.Handle)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>CanMakeTextSmaller</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanMakeTextSmaller As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanMakeTextSmaller As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>DIM t_return As Boolean = TRUE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function canMakeTextSmaller Lib "Cocoa" Selector "canMakeTextSmaller" (id As Integer) As Boolean</SourceLine>
+   <SourceLine>t_return = canMakeTextSmaller(me.Handle)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>CanMakeTextStandardSize</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanMakeTextStandardSize As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanMakeTextStandardSize As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>DIM t_return As Boolean = TRUE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function canMakeTextStandardSize Lib "Cocoa" Selector "canMakeTextStandardSize" (id As Integer) As Boolean</SourceLine>
+   <SourceLine>t_return = canMakeTextStandardSize(me.Handle)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>CanPaste</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>CanPaste As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>CanPaste As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>' Determines whether or not it is currently possible to paste from the clipboard.</SourceLine>
+   <SourceLine>' Linux only</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM t_return_value As Boolean = FALSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetLinux</SourceLine>
+   <SourceLine>t_return_value = (webkit_web_view_can_paste_clipboard(gtk_bin_get_child(me.Handle)) = 1)</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return_value</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>ContinuousSpellCheckingEnabled</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>ContinuousSpellCheckingEnabled As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>ContinuousSpellCheckingEnabled As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub setContinuousSpellCheckingEnabled Lib "Cocoa" Selector "setContinuousSpellCheckingEnabled:" (id As Integer, flag As Boolean)</SourceLine>
+   <SourceLine>setContinuousSpellCheckingEnabled me.Handle, value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>// write this</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>// not supported</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>DIM t_return_value As Boolean = FALSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function isContinuousSpellCheckingEnabled Lib "Cocoa" Selector "isContinuousSpellCheckingEnabled" (id As Integer) As Boolean</SourceLine>
+   <SourceLine>t_return_value = isContinuousSpellCheckingEnabled(me.Handle)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>t_return_value = (webkit_web_view_get_editable(gtk_bin_get_child(me.Handle)) = 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>// not supported</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return_value</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>DelegateClass</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared DelegateClass As Ptr</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>DelegateClass As Ptr</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Editable</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Editable As Boolean</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Editable As Boolean</ItemDeclaration>
+  <ItemFlags>0</ItemFlags>
+  <IsShared>0</IsShared>
+  <SetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Set</SourceLine>
+   <SourceLine>' Sets whether HTMLViewer allows the user to edit its HTML document.</SourceLine>
+   <SourceLine>'</SourceLine>
+   <SourceLine>' If flag is TRUE, HTMLViewer allows the user to edit the document.</SourceLine>
+   <SourceLine>' If flag is FALSE, an element in HTMLViewer's document can only be edited if the CONTENTEDITABLE attribute</SourceLine>
+   <SourceLine>' has been set on the element or one of its parent elements. You can change HTMLViewer's document</SourceLine>
+   <SourceLine>' programmatically regardless of this setting. By default a HTMLViewer is not editable.</SourceLine>
+   <SourceLine>'</SourceLine>
+   <SourceLine>' Normally, an HTML document is not editable unless the elements within the document are editable.</SourceLine>
+   <SourceLine>' This function provides a low-level way to make the contents of a HTMLViewer editable without altering</SourceLine>
+   <SourceLine>' the document or DOM structure.</SourceLine>
+   <SourceLine>'</SourceLine>
+   <SourceLine>' Note, on Windows it does modify the DOM by adding the contentEditable attribute to the body tag</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Sub setEditable Lib "Cocoa" Selector "setEditable:" (id As Integer, flag As Boolean)</SourceLine>
+   <SourceLine>setEditable me.Handle, value</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>webkit_web_view_set_editable(gtk_bin_get_child(me.Handle), Val(value))</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>if (value) then</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.body.setAttribute('contentEditable', true);"</SourceLine>
+   <SourceLine>else</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.body.setAttribute('contentEditable', false);"</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>End Set</SourceLine>
+  </SetAccessor>
+  <GetAccessor>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Get</SourceLine>
+   <SourceLine>' Returns TRUE if HTMLViewer allows the user to edit the HTML document, FALSE if it doesn't.</SourceLine>
+   <SourceLine>' You can change HTMLViewer's document programmatically regardless of this setting.</SourceLine>
+   <SourceLine>' Mac OS X and Linux</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>DIM t_return As Boolean = FALSE</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>Declare Function isEditable Lib "Cocoa" Selector "isEditable" (id As Integer) As Boolean</SourceLine>
+   <SourceLine>t_return = isEditable(me.Handle)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetLinux</SourceLine>
+   <SourceLine>t_return = (webkit_web_view_get_editable(gtk_bin_get_child(me.Handle)) = 1)</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#elseif TargetWin32</SourceLine>
+   <SourceLine>// not supported</SourceLine>
+   <SourceLine>// You can check if the body tag has the "contentEditable" attribute set</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>Return t_return</SourceLine>
+   <SourceLine>End Get</SourceLine>
+  </GetAccessor>
+ </Property>
+ <Property>
+  <ItemName>mAcceptTextDrop</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mAcceptTextDrop As Boolean = FALSE</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mAcceptTextDrop As Boolean = FALSE</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>mDelegateInstance</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>mDelegateInstance As Ptr</SourceLine>
+   <SourceLine></SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>mDelegateInstance As Ptr</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+ </Property>
+ <Property>
+  <ItemName>Viewers()</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Viewers() As WebKitViewer</SourceLine>
+   <SourceLine>Holds an array of all the WebKitViewers that have been created</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>Viewers() As WebKitViewer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+ </Property>
+ <ViewBehavior>
+  <ViewProperty>
+   <ObjName>AutoDeactivate</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanCopy</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanCut</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanMakeTextLarger</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanMakeTextSmaller</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanMakeTextStandardSize</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>CanPaste</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>ContinuousSpellCheckingEnabled</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Editable</ObjName>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Enabled</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Height</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>200</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>HelpTag</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <ItemType>String</ItemType>
+   <EditorType>MultiLineEditor</EditorType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Index</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Left</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockBottom</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockLeft</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockRight</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>LockTop</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Name</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Renderer</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Behavior</PropertyGroup>
+   <PropertyValue>1</PropertyValue>
+   <ItemType>Integer</ItemType>
+   <EditorType>Enum</EditorType>
+   <Enumeration>
+    <ItemDef>1 - WebKit</ItemDef>
+   </Enumeration>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Super</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>ID</PropertyGroup>
+   <ItemType>String</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>TabIndex</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>TabPanelIndex</ObjName>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>0</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Top</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Visible</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Appearance</PropertyGroup>
+   <PropertyValue>True</PropertyValue>
+   <ItemType>Boolean</ItemType>
+  </ViewProperty>
+  <ViewProperty>
+   <ObjName>Width</ObjName>
+   <Visible>1</Visible>
+   <PropertyGroup>Position</PropertyGroup>
+   <PropertyValue>200</PropertyValue>
+   <ItemType>Integer</ItemType>
+  </ViewProperty>
+ </ViewBehavior>
+ <Constant>
+  <ItemName>kWebElementImage</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementImage</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementImage</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementImageAltString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementImageAltString</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementImageAltString</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementImageRect</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementImageRect</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementImageRect</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementImageURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementImageURL</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementImageURL</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementIsContentEditableKey</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementIsContentEditableKey</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementIsContentEditableKey</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementIsInScrollBar</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementIsInScrollBar</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementIsInScrollBar</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementIsSelected</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementIsSelected</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementIsSelected</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementLinkIsLive</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementLinkIsLive</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementLinkIsLive</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementLinkLabel</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementLinkLabel</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementLinkLabel</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementLinkURL</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementLinkURL</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementLinkURL</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>kWebElementTargetFrame</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>kWebElementTargetFrame</ItemName>
+  <ItemType>0</ItemType>
+  <ItemDef>WebElementTargetFrame</ItemDef>
+  <ItemFlags>0</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>NO</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>NO</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>0</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Constant>
+  <ItemName>YES</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>YES</ItemName>
+  <ItemType>2</ItemType>
+  <ItemDef>1</ItemDef>
+  <ItemFlags>33</ItemFlags>
+ </Constant>
+ <Structure>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>CGPoint</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemName>CGPoint</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>X As Single</SourceLine>
+   <SourceLine>Y As Single</SourceLine>
+  </ItemSource>
+ </Structure>
+ <Structure>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>CGRect</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemName>CGRect</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Origin As CGPoint</SourceLine>
+   <SourceLine>RectSize As CGSize</SourceLine>
+  </ItemSource>
+ </Structure>
+ <Structure>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>CGSize</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemName>CGSize</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Width As Single</SourceLine>
+   <SourceLine>Height As Single</SourceLine>
+  </ItemSource>
+ </Structure>
+ <Structure>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>NSRect</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemName>NSRect</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>X As Single</SourceLine>
+   <SourceLine>Y As Single</SourceLine>
+   <SourceLine>Width As Single</SourceLine>
+   <SourceLine>Height As Single</SourceLine>
+  </ItemSource>
+ </Structure>
+ <Structure>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>NSSize</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemName>NSSize</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Width As Single</SourceLine>
+   <SourceLine>Height As Single</SourceLine>
+  </ItemSource>
+ </Structure>
+ <Enumeration>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemName>WebDragDestinationAction</ItemName>
+  <ItemFlags>33</ItemFlags>
+  <ItemType>Integer</ItemType>
+  <ItemName>WebDragDestinationAction</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>WebDragDestinationActionNone=0</SourceLine>
+   <SourceLine>WebDragDestinationActionDHTML=1</SourceLine>
+   <SourceLine>WebDragDestinationActionEdit=2</SourceLine>
+   <SourceLine>WebDragDestinationActionLoad=4</SourceLine>
+   <SourceLine>WebDragDestinationActionAny=4294967295</SourceLine>
+  </ItemSource>
+ </Enumeration>
+</block>
+</RBProject>

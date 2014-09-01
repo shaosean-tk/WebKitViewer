@@ -59,7 +59,7 @@
    <SourceLine></SourceLine>
    <SourceLine>// context menu</SourceLine>
    <SourceLine>if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:contextMenuItemsForElement:defaultMenuItems:"), _</SourceLine>
-   <SourceLine>AddressOf CocoaWebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
+   <SourceLine>AddressOf WebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf CocoaWebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
    <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf CocoawebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
@@ -380,12 +380,12 @@
   <ItemResult>Picture</ItemResult>
  </Method>
  <Method>
-  <ItemName>CocoaWebViewContextMenuItemsForElementDefaultMenuItems</ItemName>
+  <ItemName>WebViewContextMenuItemsForElementDefaultMenuItems</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared Function CocoaWebViewContextMenuItemsForElementDefaultMenuItems(pid As Ptr, sel As Ptr, sender As Ptr, element As Ptr, defaultMenuItems As Ptr) As Ptr</SourceLine>
+   <SourceLine>Shared Function WebViewContextMenuItemsForElementDefaultMenuItems(pid As Ptr, sel As Ptr, sender As Ptr, element As Ptr, defaultMenuItems As Ptr) As Ptr</SourceLine>
    <SourceLine>#pragma Unused sel</SourceLine>
    <SourceLine>#pragma Unused sender</SourceLine>
    <SourceLine></SourceLine>
@@ -1899,7 +1899,7 @@
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>mAcceptTextDrop As Boolean = FALSE</SourceLine>
+   <SourceLine>mAcceptTextDrop As Boolean</SourceLine>
    <SourceLine></SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>

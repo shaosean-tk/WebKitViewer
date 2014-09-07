@@ -246,27 +246,27 @@
    <SourceLine>DIM keyName As CFStringRef = CFRetain(NSArrayObjectAtIndex(elementKeys, i))</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>select case keyName</SourceLine>
-   <SourceLine>case kWebElementImage  // Picture representing an image element.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementImage) = CocoaPictureFromNSImage(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementImageAltString  // String of the ALT attribute of an image element.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementImageAltString) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
-   <SourceLine>' case kWebElementImageRect  // An NSValue containing an NSRect, the size of an image element.</SourceLine>
+   <SourceLine>case WebElementImage  // Picture representing an image element.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementImage) = CocoaPictureFromNSImage(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementImageAltString  // String of the ALT attribute of an image element.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementImageAltString) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
+   <SourceLine>' case WebElementImageRect  // An NSValue containing an NSRect, the size of an image element.</SourceLine>
    <SourceLine>//</SourceLine>
-   <SourceLine>case kWebElementImageURL  // String containing the absolute URI of an image element.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementImageURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementIsContentEditableKey  // BOOL value to indicate whether the element is editable or not.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementIsContentEditableKey) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>' case kWebElementIsInScrollBar</SourceLine>
-   <SourceLine>' returnValue.Value(kWebElementIsInScrollBar) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementIsSelected  //BOOL value to indicate whether a text element is selected or not.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementIsSelected) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementLinkIsLive  // BOOL indicating whether the link is live or not.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementLinkIsLive) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementLinkLabel  // String containing the text within an anchor.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementLinkLabel) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
-   <SourceLine>case kWebElementLinkURL  // String containing the absolute URI of a link if the element is within an anchor.</SourceLine>
-   <SourceLine>returnValue.Value(kWebElementLinkURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
-   <SourceLine>' case kWebElementTargetFrame</SourceLine>
+   <SourceLine>case WebElementImageURL  // String containing the absolute URI of an image element.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementImageURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementIsContentEditableKey  // BOOL value to indicate whether the element is editable or not.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementIsContentEditableKey) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>' case WebElementIsInScrollBar</SourceLine>
+   <SourceLine>' returnValue.Value(WebElementIsInScrollBar) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementIsSelected  //BOOL value to indicate whether a text element is selected or not.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementIsSelected) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementLinkIsLive  // BOOL indicating whether the link is live or not.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementLinkIsLive) = NSNumberBoolValue(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementLinkLabel  // String containing the text within an anchor.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementLinkLabel) = CFRetain(NSDictionaryValueForKey(element, keyName))</SourceLine>
+   <SourceLine>case WebElementLinkURL  // String containing the absolute URI of a link if the element is within an anchor.</SourceLine>
+   <SourceLine>returnValue.Value(WebElementLinkURL) = NSURLAbsoluteString(NSDictionaryObjectForKey(element, keyName))</SourceLine>
+   <SourceLine>' case WebElementTargetFrame</SourceLine>
    <SourceLine>//</SourceLine>
    <SourceLine>end select</SourceLine>
    <SourceLine></SourceLine>
@@ -831,12 +831,12 @@
    <SourceLine></SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>if (image &lt;&gt; Nil) then</SourceLine>
-   <SourceLine>DIM t_memoryblock As MemoryBlock = image.GetData(Picture.FormatPNG)</SourceLine>
+   <SourceLine>DIM aMemoryBlock As MemoryBlock = image.GetData(Picture.FormatPNG)</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>DIM t_encoded_picture As String = t_memoryblock</SourceLine>
-   <SourceLine>t_encoded_picture = EncodeBase64(t_encoded_picture, 0)  // the zero means no line breaks in the base64 encoded data</SourceLine>
+   <SourceLine>DIM encodedPicture As String = aMemoryBlock</SourceLine>
+   <SourceLine>encodedPicture = EncodeBase64(encodedPicture, 0)  // the zero means no line breaks in the base64 encoded data</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertImage', false, 'data:image/png;base64," + t_encoded_picture + "');"</SourceLine>
+   <SourceLine>me.ExecuteJavaScript "document.execCommand('insertImage', false, 'data:image/png;base64," + encodedPicture + "');"</SourceLine>
    <SourceLine>end if</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -2098,111 +2098,111 @@
   </ViewProperty>
  </ViewBehavior>
  <Constant>
-  <ItemName>kWebElementImage</ItemName>
+  <ItemName>WebElementImage</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementImage</ItemName>
+  <ItemName>WebElementImage</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementImage</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementImageAltString</ItemName>
+  <ItemName>WebElementImageAltString</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementImageAltString</ItemName>
+  <ItemName>WebElementImageAltString</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementImageAltString</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementImageRect</ItemName>
+  <ItemName>WebElementImageRect</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementImageRect</ItemName>
+  <ItemName>WebElementImageRect</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementImageRect</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementImageURL</ItemName>
+  <ItemName>WebElementImageURL</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementImageURL</ItemName>
+  <ItemName>WebElementImageURL</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementImageURL</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementIsContentEditableKey</ItemName>
+  <ItemName>WebElementIsContentEditableKey</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementIsContentEditableKey</ItemName>
+  <ItemName>WebElementIsContentEditableKey</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementIsContentEditableKey</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementIsInScrollBar</ItemName>
+  <ItemName>WebElementIsInScrollBar</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementIsInScrollBar</ItemName>
+  <ItemName>WebElementIsInScrollBar</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementIsInScrollBar</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementIsSelected</ItemName>
+  <ItemName>WebElementIsSelected</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementIsSelected</ItemName>
+  <ItemName>WebElementIsSelected</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementIsSelected</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementLinkIsLive</ItemName>
+  <ItemName>WebElementLinkIsLive</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementLinkIsLive</ItemName>
+  <ItemName>WebElementLinkIsLive</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementLinkIsLive</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementLinkLabel</ItemName>
+  <ItemName>WebElementLinkLabel</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementLinkLabel</ItemName>
+  <ItemName>WebElementLinkLabel</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementLinkLabel</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementLinkURL</ItemName>
+  <ItemName>WebElementLinkURL</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementLinkURL</ItemName>
+  <ItemName>WebElementLinkURL</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementLinkURL</ItemDef>
   <ItemFlags>0</ItemFlags>
  </Constant>
  <Constant>
-  <ItemName>kWebElementTargetFrame</ItemName>
+  <ItemName>WebElementTargetFrame</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <TextEncoding>134217984</TextEncoding>
-  <ItemName>kWebElementTargetFrame</ItemName>
+  <ItemName>WebElementTargetFrame</ItemName>
   <ItemType>0</ItemType>
   <ItemDef>WebElementTargetFrame</ItemDef>
   <ItemFlags>0</ItemFlags>

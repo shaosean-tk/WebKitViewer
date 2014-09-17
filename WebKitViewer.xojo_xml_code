@@ -41,37 +41,14 @@
    <SourceLine>#if TargetCocoa</SourceLine>
    <SourceLine>Declare Function alloc Lib "Cocoa" Selector "alloc" (classRef As Ptr) As Ptr</SourceLine>
    <SourceLine>Declare Function init Lib "Cocoa" Selector "init" (classRef As Ptr) As Ptr</SourceLine>
-   <SourceLine>Declare Function NSClassFromString Lib "Cocoa" (aClassName As CFStringRef) As Ptr</SourceLine>
-   <SourceLine>Declare Function NSSelectorFromString Lib "Cocoa" (aSelector As CFStringRef) As Ptr</SourceLine>
-   <SourceLine>Declare Function objc_allocateClassPair Lib "Cocoa" (superclass As Ptr, name As CString, extraBytes As Integer) As Ptr</SourceLine>
-   <SourceLine>Declare Function objc_getProtocol Lib "Cocoa" (name As CString) As Ptr</SourceLine>
-   <SourceLine>Declare Function class_addMethod Lib "Cocoa" (aClass As Ptr, name As Ptr, imp As Ptr, types As CString) As Boolean</SourceLine>
-   <SourceLine>Declare Function class_addProtocol Lib "Cocoa" (aClass As Ptr, protocol As Ptr) As Boolean</SourceLine>
-   <SourceLine>Declare Sub objc_registerClassPair Lib "Cocoa" (aClass As Ptr)</SourceLine>
    <SourceLine>Declare Sub setUIDelegate Lib "Cocoa" Selector "setUIDelegate:" (id As Ptr, del_id As Ptr)</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>if (DelegateClass = Nil) then</SourceLine>
-   <SourceLine>DelegateClass = objc_allocateClassPair(NSClassFromString("WebView"), "SSWebView", 0)</SourceLine>
-   <SourceLine>objc_registerClassPair DelegateClass  // register the class</SourceLine>
+   <SourceLine>me.mInstance = init(alloc(SSWebViewClass))</SourceLine>
    <SourceLine></SourceLine>
-   <SourceLine>// add the protocols to our subclass</SourceLine>
-   <SourceLine>if (not class_addProtocol(DelegateClass, objc_getProtocol("WebUIDelegate"))) then Break</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>// context menu</SourceLine>
-   <SourceLine>if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:contextMenuItemsForElement:defaultMenuItems:"), _</SourceLine>
-   <SourceLine>AddressOf WebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf CocoaWebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
-   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf CocoawebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
-   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingInfo"))) then Break</SourceLine>
-   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("draggingEntered:"), AddressOf CocoaPerformDragOperation, "i@:@")) then Break</SourceLine>
-   <SourceLine>end if</SourceLine>
-   <SourceLine></SourceLine>
-   <SourceLine>me.mDelegateInstance = init(alloc(DelegateClass))</SourceLine>
-   <SourceLine>setUIDelegate Ptr(me.Handle), me.mDelegateInstance</SourceLine>
+   <SourceLine>if (me.mInstance &lt;&gt; Nil) then</SourceLine>
+   <SourceLine>setUIDelegate Ptr(me.Handle), me.mInstance</SourceLine>
    <SourceLine>Viewers.Append me</SourceLine>
+   <SourceLine>end if</SourceLine>
    <SourceLine>#endif</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>RaiseEvent Open</SourceLine>
@@ -398,7 +375,7 @@
    <SourceLine></SourceLine>
    <SourceLine>if (UBound(Viewers) &gt; -1) then</SourceLine>
    <SourceLine>for i as Integer = 0 to UBound(Viewers)</SourceLine>
-   <SourceLine>if (Viewers(i).mDelegateInstance = pid) then  // found the viewer to create the context menu</SourceLine>
+   <SourceLine>if (Viewers(i).mInstance = pid) then  // found the viewer to create the context menu</SourceLine>
    <SourceLine>viewer = Viewers(i)</SourceLine>
    <SourceLine>baseMenu.Tag = CocoaDictionaryFromNSDictionary(element)</SourceLine>
    <SourceLine>willConstructContextualMenu = viewer.ConstructContextualMenu(baseMenu, System.MouseX, System.MouseY)</SourceLine>
@@ -431,12 +408,14 @@
   <ItemResult>Ptr</ItemResult>
  </Method>
  <Method>
-  <ItemName>CocoaWebViewDragDestinationActionMaskForDraggingInfo</ItemName>
+  <ItemName>WebViewDragDestinationActionMaskForDraggingInfo</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared Function CocoaWebViewDragDestinationActionMaskForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, draggingInfo As Ptr) As WebDragDestinationAction</SourceLine>
+   <SourceLine>Shared Function WebViewDragDestinationActionMaskForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, draggingInfo As Ptr) As WebDragDestinationAction</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine></SourceLine>
    <SourceLine>DIM returnValue As WebDragDestinationAction = WebDragDestinationAction.WebDragDestinationActionNone</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>returnValue = WebDragDestinationAction.WebDragDestinationActionLoad</SourceLine>
@@ -493,6 +472,8 @@
    <TextEncoding>134217984</TextEncoding>
    <SourceLine>Sub Constructor()</SourceLine>
    <SourceLine>me.Renderer = 1  // webkit</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>WebKitViewer.Init</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// Calling the overridden superclass constructor.</SourceLine>
    <SourceLine>Super.Constructor</SourceLine>
@@ -1425,6 +1406,144 @@
   <LibraryName>libwebkitgtk-1.0.so</LibraryName>
   <SoftLink>1</SoftLink>
  </ExternalMethod>
+ <Method>
+  <ItemName>Init</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared Sub Init()</SourceLine>
+   <SourceLine>#if TargetCocoa</SourceLine>
+   <SourceLine>if (SSWebViewClass = Nil) then</SourceLine>
+   <SourceLine>DIM WebView As Ptr = NSClassFromString("WebView")  // get the WebView class</SourceLine>
+   <SourceLine>SSWebViewClass = objc_allocateClassPair(WebView, "SSWebView", 0)  // create our subclass</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// add protocols to the subclass</SourceLine>
+   <SourceLine>if (not class_addProtocol(SSWebViewClass, objc_getProtocol("WebUIDelegate"))) then Break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// add methods to the subclass</SourceLine>
+   <SourceLine>if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:contextMenuItemsForElement:defaultMenuItems:"), AddressOf WebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
+   <SourceLine>if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf WebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf CocoawebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingInfo"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("draggingEntered:"), AddressOf CocoaPerformDragOperation, "i@:@")) then Break</SourceLine>
+   <SourceLine></SourceLine>
+   <SourceLine>// register the new class with the runtime</SourceLine>
+   <SourceLine>objc_registerClassPair SSWebViewClass</SourceLine>
+   <SourceLine>end if</SourceLine>
+   <SourceLine>#endif</SourceLine>
+   <SourceLine>End Sub</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+  <ItemParams></ItemParams>
+  <ItemResult></ItemResult>
+ </Method>
+ <ExternalMethod>
+  <ItemName>objc_allocateClassPair</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function objc_allocateClassPair Lib "Cocoa" (superclass As Ptr, name As CString, extraBytes As Integer) As Ptr</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>superclass As Ptr, name As CString, extraBytes As Integer</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>NSClassFromString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function NSClassFromString Lib "Cocoa" (className As CFStringRef) As Ptr</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>className As CFStringRef</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>class_addProtocol</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function class_addProtocol Lib "Cocoa" (aClass As Ptr, protocol As Ptr) As Boolean</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>aClass As Ptr, protocol As Ptr</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>objc_registerClassPair</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Sub objc_registerClassPair Lib "Cocoa" (aClass As Ptr)</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>aClass As Ptr</ItemParams>
+  <ItemResult></ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>NSSelectorFromString</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function NSSelectorFromString Lib "Cocoa" (aSelector As CFStringRef) As Ptr</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>aSelector As CFStringRef</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>class_addMethod</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function class_addMethod Lib "Cocoa" (classRef As Ptr, name As Ptr, imp As Ptr, types As CString) As Boolean</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>classRef As Ptr, name As Ptr, imp As Ptr, types As CString</ItemParams>
+  <ItemResult>Boolean</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
  <Hook>
   <ItemName>ConstructContextualMenu</ItemName>
   <TextEncoding>134217984</TextEncoding>
@@ -1806,20 +1925,6 @@
   </GetAccessor>
  </Property>
  <Property>
-  <ItemName>DelegateClass</ItemName>
-  <Compatibility></Compatibility>
-  <Visible>1</Visible>
-  <ItemSource>
-   <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared DelegateClass As Ptr</SourceLine>
-   <SourceLine></SourceLine>
-  </ItemSource>
-  <TextEncoding>134217984</TextEncoding>
-  <ItemDeclaration>DelegateClass As Ptr</ItemDeclaration>
-  <ItemFlags>33</ItemFlags>
-  <IsShared>1</IsShared>
- </Property>
- <Property>
   <ItemName>Editable</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
@@ -1908,16 +2013,16 @@
   <IsShared>0</IsShared>
  </Property>
  <Property>
-  <ItemName>mDelegateInstance</ItemName>
+  <ItemName>mInstance</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>mDelegateInstance As Ptr</SourceLine>
+   <SourceLine>mInstance As Ptr</SourceLine>
    <SourceLine></SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
-  <ItemDeclaration>mDelegateInstance As Ptr</ItemDeclaration>
+  <ItemDeclaration>mInstance As Ptr</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>0</IsShared>
  </Property>
@@ -1932,6 +2037,20 @@
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <ItemDeclaration>Viewers() As WebKitViewer</ItemDeclaration>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>1</IsShared>
+ </Property>
+ <Property>
+  <ItemName>SSWebViewClass</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Shared SSWebViewClass As Ptr</SourceLine>
+   <SourceLine>Our subclass</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <ItemDeclaration>SSWebViewClass As Ptr</ItemDeclaration>
   <ItemFlags>33</ItemFlags>
   <IsShared>1</IsShared>
  </Property>

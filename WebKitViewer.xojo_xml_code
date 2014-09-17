@@ -264,12 +264,12 @@
   <ItemResult>Dictionary</ItemResult>
  </Method>
  <Method>
-  <ItemName>CocoaDraggingEntered</ItemName>
+  <ItemName>DraggingEntered</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared Function CocoaDraggingEntered(id As Ptr, sel As Ptr, sender As Ptr) As Integer</SourceLine>
+   <SourceLine>Shared Function DraggingEntered(id As Ptr, sel As Ptr, sender As Ptr) As Integer</SourceLine>
    <SourceLine>break</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>Return 32</SourceLine>
@@ -283,21 +283,22 @@
   <ItemResult>Integer</ItemResult>
  </Method>
  <Method>
-  <ItemName>CocoaPerformDragOperation</ItemName>
+  <ItemName>PerformDragOperation</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared Sub CocoaPerformDragOperation(id As Ptr, sel As Ptr, sender As Ptr)</SourceLine>
-   <SourceLine>break</SourceLine>
-   <SourceLine>End Sub</SourceLine>
+   <SourceLine>Shared Function PerformDragOperation(id As Ptr, sel As Ptr, sender As Ptr) As Boolean</SourceLine>
+   <SourceLine>Beep</SourceLine>
+   <SourceLine>Return TRUE</SourceLine>
+   <SourceLine>End Function</SourceLine>
   </ItemSource>
   <TextEncoding>134217984</TextEncoding>
   <AliasName></AliasName>
   <ItemFlags>33</ItemFlags>
   <IsShared>1</IsShared>
   <ItemParams>id As Ptr, sel As Ptr, sender As Ptr</ItemParams>
-  <ItemResult></ItemResult>
+  <ItemResult>Boolean</ItemResult>
  </Method>
  <Method>
   <ItemName>CocoaPictureFromNSImage</ItemName>
@@ -431,12 +432,12 @@
   <ItemResult>WebDragDestinationAction</ItemResult>
  </Method>
  <Method>
-  <ItemName>CocoawebViewWillPerformDragDestinationActionForDraggingInfo</ItemName>
+  <ItemName>WebViewWillPerformDragDestinationActionForDraggingInfo</ItemName>
   <Compatibility></Compatibility>
   <Visible>1</Visible>
   <ItemSource>
    <TextEncoding>134217984</TextEncoding>
-   <SourceLine>Shared Sub CocoawebViewWillPerformDragDestinationActionForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, action As Integer, draggingInfo As Ptr)</SourceLine>
+   <SourceLine>Shared Sub WebViewWillPerformDragDestinationActionForDraggingInfo(id As Ptr, sel As Ptr, sender As Ptr, action As Integer, draggingInfo As Ptr)</SourceLine>
    <SourceLine>Break</SourceLine>
    <SourceLine>End Sub</SourceLine>
   </ItemSource>
@@ -1420,14 +1421,16 @@
    <SourceLine></SourceLine>
    <SourceLine>// add protocols to the subclass</SourceLine>
    <SourceLine>if (not class_addProtocol(SSWebViewClass, objc_getProtocol("WebUIDelegate"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(SSWebViewClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// add methods to the subclass</SourceLine>
    <SourceLine>if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:contextMenuItemsForElement:defaultMenuItems:"), AddressOf WebViewContextMenuItemsForElementDefaultMenuItems, "@@:@@@")) then Break</SourceLine>
-   <SourceLine>if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf WebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
-   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf CocoawebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
-   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
-   <SourceLine>' if (not class_addProtocol(DelegateClass, objc_getProtocol("NSDraggingInfo"))) then Break</SourceLine>
-   <SourceLine>' if (not class_addMethod(DelegateClass, NSSelectorFromString("draggingEntered:"), AddressOf CocoaPerformDragOperation, "i@:@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:dragDestinationActionMaskForDraggingInfo:"), AddressOf WebViewDragDestinationActionMaskForDraggingInfo, "I@:@@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(SSWebViewClass, NSSelectorFromString("webView:willPerformDragDestinationAction:forDraggingInfo:"), AddressOf WebViewWillPerformDragDestinationActionForDraggingInfo, "v@:@i@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(SSWebViewClass, objc_getProtocol("NSDraggingDestination"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addProtocol(SSWebViewClass, objc_getProtocol("NSDraggingInfo"))) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(SSWebViewClass, NSSelectorFromString("draggingEntered:"), AddressOf DraggingEntered, "i@:@")) then Break</SourceLine>
+   <SourceLine>' if (not class_addMethod(SSWebViewClass, NSSelectorFromString("performDragOperation:"), AddressOf PerformDragOperation, "c@:@")) then Break</SourceLine>
    <SourceLine></SourceLine>
    <SourceLine>// register the new class with the runtime</SourceLine>
    <SourceLine>objc_registerClassPair SSWebViewClass</SourceLine>

@@ -1547,6 +1547,23 @@
   <LibraryName>Cocoa</LibraryName>
   <SoftLink>0</SoftLink>
  </ExternalMethod>
+ <ExternalMethod>
+  <ItemName>objc_getProtocol</ItemName>
+  <Compatibility></Compatibility>
+  <Visible>1</Visible>
+  <ItemSource>
+   <TextEncoding>134217984</TextEncoding>
+   <SourceLine>Declare Function objc_getProtocol Lib "Cocoa" (name As CString) As Ptr</SourceLine>
+  </ItemSource>
+  <TextEncoding>134217984</TextEncoding>
+  <AliasName></AliasName>
+  <ItemFlags>33</ItemFlags>
+  <IsShared>0</IsShared>
+  <ItemParams>name As CString</ItemParams>
+  <ItemResult>Ptr</ItemResult>
+  <LibraryName>Cocoa</LibraryName>
+  <SoftLink>0</SoftLink>
+ </ExternalMethod>
  <Hook>
   <ItemName>ConstructContextualMenu</ItemName>
   <TextEncoding>134217984</TextEncoding>
